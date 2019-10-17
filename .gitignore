@@ -3,4 +3,4 @@
 *.tfvars
 .terraform/*
 /.terraform.tfstate.lock.info
-creds/*
+/environmentvariables.tf
