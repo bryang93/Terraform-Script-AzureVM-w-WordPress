@@ -12,9 +12,15 @@ before_script:
   - terraform init
 
 stages:
+  - azlogin
   - validate
   - plan
   - apply
+
+azlogin:
+  stage: azlogin
+  script:
+    - az login  
 
 validate:
   stage: validate
