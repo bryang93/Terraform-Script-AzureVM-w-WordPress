@@ -17,11 +17,6 @@ stages:
   - plan
   - apply
 
-azlogin:
-  stage: azlogin
-  script:
-    - az login  
-
 validate:
   stage: validate
   script:
