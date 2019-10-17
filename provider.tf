@@ -1,3 +1,8 @@
 provider "azurerm" {
-    version = "=1.34.0"
+  version = "=1.34.0"
+
+  subscription_id = "bb1fc0b9-b4b7-4dba-a8db-d8b6e3e439d7"
+  client_id       = "68287d6f-5ca9-40ef-916f-2d1ad0156af6"
+  client_secret   = "B2C2?UcvIRN6FnCXBH4?SAZSB:NZ[vqy"
+  tenant_id       = "https://login.microsoftonline.com/f64708dc-af27-47aa-b4c8-4465774fa9a4/oauth2/v2.0/authorize"
 }
