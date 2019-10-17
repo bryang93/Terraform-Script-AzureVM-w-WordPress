@@ -1,5 +1,6 @@
 *.tfstate
 *.tfstate.backup
 *.tfvars
-/.terraform/
+.terraform/*
 /.terraform.tfstate.lock.info
+creds/*
