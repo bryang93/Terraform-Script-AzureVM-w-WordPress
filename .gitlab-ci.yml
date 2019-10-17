@@ -3,9 +3,6 @@ image:
   entrypoint:
     - '/usr/bin/env'
 
-variables:
-  PLAN: plan.tfplan
-
 cache:
   paths:
     - .terraform
@@ -27,11 +24,7 @@ validate:
 plan:
   stage: plan
   script:
-
-build:
-  stage: plan
-  script:
-    - terraform plan 
+    - terraform plan
 
 apply:
   stage: apply
