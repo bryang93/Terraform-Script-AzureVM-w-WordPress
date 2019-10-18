@@ -31,4 +31,4 @@ apply:
   stage: apply
   script:
     - terraform apply
-    - "yes"
+    - 'yes'
