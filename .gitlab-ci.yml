@@ -16,6 +16,7 @@ stages:
   - validate
   - plan
   - apply
+  - destroy
 
 validate:
   stage: validate
@@ -30,5 +31,8 @@ plan:
 apply:
   stage: apply
   script:
-    - terraform apply
-      - 'yes'
+    - terraform apply -auto-approve
+
+destroy:
+    stage: destroy
+    script: terraform destroy -auto-approve    
