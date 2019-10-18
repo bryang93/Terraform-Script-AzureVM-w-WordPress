@@ -30,5 +30,4 @@ plan:
 apply:
   stage: apply
   script:
-    - terraform apply
-    - 'yes'
+    - terraform apply -input=false
