@@ -130,7 +130,7 @@ resource "azurerm_virtual_machine_extension" "WordPressVMExt" {
 
   settings = <<SETTINGS
     {
-        "'{"fileUris":["https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/wordpress-single-vm-ubuntu/install_wordpress.sh"],"commandToExecute":"sh install_wordpress.sh"}'"
+        "fileUris":["https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/wordpress-single-vm-ubuntu/install_wordpress.sh"],"commandToExecute":"sh install_wordpress.sh"
     }
 SETTINGS
 }
