@@ -67,14 +67,13 @@ resource "azurerm_public_ip" "WordPressIP" {
 
 # Nic
 resource "azurerm_network_interface" "WordPressNic" {
-  name                = "WordPressNic"
-  location            = "${var.loc}"
-  resource_group_name = "${var.rg}"
+  name                      = "WordPressNic"
+  location                  = "${var.loc}"
+  resource_group_name       = "${var.rg}"
   network_security_group_id = "${azurerm_network_security_group.WordPressNSG.id}"
 
   ip_configuration {
     name                          = "WordPressConfiguration"
-    location                      = "${var.loc}"
     subnet_id                     = "${azurerm_subnet.internal.id}"
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = "${azurerm_public_ip.WordPressIP.id}"
@@ -107,13 +106,13 @@ resource "azurerm_virtual_machine" "WordPressVM" {
   }
 
   os_profile {
-      computer_name = "host"
-      admin_username = "user"
-      admin_password = "Password1234!"
+    computer_name  = "host"
+    admin_username = "user"
+    admin_password = "Password1234!"
   }
 
   os_profile_linux_config {
-      disable_password_authentication = false
+    disable_password_authentication = false
   }
 
   primary_network_interface_id = "${azurerm_network_interface.WordPressNic.id}"
