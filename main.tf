@@ -50,8 +50,8 @@ resource "azurerm_virtual_network" "WordPressVNet" {
 }
 
 # Subnet Config
-resource "azurerm_subnet" "internal" {
-  name                 = "internal"
+resource "azurerm_subnet" "SubnetWp" {
+  name                 = "SubnetWp"
   resource_group_name  = "${var.rg}"
   virtual_network_name = "${azurerm_virtual_network.WordPressVNet.name}"
   address_prefix       = "192.168.1.0/24"
@@ -74,7 +74,7 @@ resource "azurerm_network_interface" "WordPressNic" {
 
   ip_configuration {
     name                          = "WordPressConfiguration"
-    subnet_id                     = "${azurerm_subnet.internal.id}"
+    subnet_id                     = "${azurerm_subnet.SubnetWp.id}"
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = "${azurerm_public_ip.WordPressIP.id}"
   }
@@ -114,8 +114,6 @@ resource "azurerm_virtual_machine" "WordPressVM" {
   os_profile_linux_config {
     disable_password_authentication = false
   }
-
-  primary_network_interface_id = "${azurerm_network_interface.WordPressNic.id}"
 }
 
 # VMExtension for WP
