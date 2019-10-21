@@ -107,7 +107,7 @@ resource "azurerm_virtual_machine" "WordPressVM" {
 
   os_profile {
     computer_name  = "host"
-    admin_username = "user"
+    admin_username = "ScriptUser"
     admin_password = "Password1234!"
   }
 
