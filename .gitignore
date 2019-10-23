@@ -3,4 +3,3 @@
 *.tfvars
 .terraform/*
 /.terraform.tfstate.lock.info
-/environmentvariables.tf
