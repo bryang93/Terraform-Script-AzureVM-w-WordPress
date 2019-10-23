@@ -65,6 +65,21 @@ resource "azurerm_public_ip" "WordPressIP" {
   allocation_method   = "Static"
 }
 
+# DNS Zone
+resource "azurerm_dns_zone" "WordPressZone" {
+  name                = "myfirstwpvm.com"
+  resource_group_name = "${var.rg}"
+}
+
+# DNS Record
+resource "azurerm_dns_a_record" "WordPressRecord" {
+  name                = "test"
+  zone_name           = "${azurerm_dns_zone.WordPressZone.name}"
+  resource_group_name = "${var.rg}"
+  ttl                 = 3600
+  records             = ["192.168.1.1"]
+}
+
 # Nic
 resource "azurerm_network_interface" "WordPressNic" {
   name                      = "WordPressNic"
