@@ -46,7 +46,7 @@ resource "azurerm_virtual_network" "WordPressVNet" {
   name                = "WordPressVNet"
   location            = "${var.loc}"
   resource_group_name = "${var.rg}"
-  address_space       = ["192.168.0.0/16"]
+  address_space       = ["10.0.0.0/16"]
 }
 
 # Subnet Config
@@ -54,7 +54,7 @@ resource "azurerm_subnet" "SubnetWp" {
   name                 = "SubnetWp"
   resource_group_name  = "${var.rg}"
   virtual_network_name = "${azurerm_virtual_network.WordPressVNet.name}"
-  address_prefix       = "192.168.1.0/24"
+  address_prefix       = "10.0.0.0/24"
 }
 
 # public IP address **MIGHT NEED DNS***
@@ -62,8 +62,8 @@ resource "azurerm_public_ip" "WordPressIP" {
   name                = "${var.wp}IP"
   location            = "${var.loc}"
   resource_group_name = "${var.rg}"
-  allocation_method   = "Static"
-  domain_name_label = "myfirstwpvm"
+  allocation_method   = "Dynamic"
+  domain_name_label   = "myfirstwpvm"
 }
 
 # Nic
@@ -119,13 +119,14 @@ resource "azurerm_virtual_machine" "WordPressVM" {
 
 # VMExtension for WP
 resource "azurerm_virtual_machine_extension" "WordPressVMExt" {
-  name                 = "WordPressVMExt"
-  location             = "${var.loc}"
-  resource_group_name  = "${var.rg}"
-  virtual_machine_name = "${azurerm_virtual_machine.WordPressVM.name}"
-  publisher            = "Microsoft.Azure.Extensions"
-  type                 = "CustomScript"
-  type_handler_version = "2.0"
+  name                       = "WordPressVMExt"
+  location                   = "${var.loc}"
+  resource_group_name        = "${var.rg}"
+  virtual_machine_name       = "${azurerm_virtual_machine.WordPressVM.name}"
+  publisher                  = "Microsoft.Azure.Extensions"
+  type                       = "CustomScript"
+  type_handler_version       = "2.0"
+  auto_upgrade_minor_version = true
 
   settings = <<SETTINGS
     {
