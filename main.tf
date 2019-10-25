@@ -77,7 +77,7 @@ resource "azurerm_network_interface" "WordPressNic" {
 
 # Storage Account
 resource "azurerm_storage_account" "wpvmstorageaccount" {
-    name                = "wordpressvmterraformScript"
+    name                = "wpvmstorageaccount"
     resource_group_name = "${var.rg}"
     location            = "eastus"
     account_replication_type = "LRS"
