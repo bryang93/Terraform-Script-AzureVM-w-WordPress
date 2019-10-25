@@ -9,36 +9,30 @@ resource "azurerm_network_security_group" "WordPressNSG" {
   name                = "WordPressNSG"
   location            = "${var.loc}"
   resource_group_name = "${var.rg}"
-}
-
-# HTTP Rule
-resource "azurerm_network_security_rule" "httpWP" {
-  name                        = "http"
-  priority                    = 2000
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "Tcp"
-  source_port_range           = "*"
-  destination_port_range      = "80"
-  source_address_prefix       = "*"
-  destination_address_prefix  = "*"
-  resource_group_name         = "${var.rg}"
-  network_security_group_name = "${azurerm_network_security_group.WordPressNSG.name}"
-}
-
-# SSH Rule
-resource "azurerm_network_security_rule" "sshWP" {
-  name                        = "ssh"
-  priority                    = 1000
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "Tcp"
-  source_port_range           = "*"
-  destination_port_range      = "22"
-  source_address_prefix       = "*"
-  destination_address_prefix  = "*"
-  resource_group_name         = "${var.rg}"
-  network_security_group_name = "${azurerm_network_security_group.WordPressNSG.name}"
+  
+  security_rule {
+    name                       = "SSH"
+    priority                   = 1000
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+  
+  security_rule {
+    name                       = "HTTP"
+    priority                   = 2000
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "80"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
 }
 
 # VNet
@@ -54,10 +48,10 @@ resource "azurerm_subnet" "SubnetWp" {
   name                 = "SubnetWp"
   resource_group_name  = "${var.rg}"
   virtual_network_name = "${azurerm_virtual_network.WordPressVNet.name}"
-  address_prefix       = "10.0.0.0/24"
+  address_prefix       = "10.0.2.0/24"
 }
 
-# public IP address **MIGHT NEED DNS***
+# public IP address
 resource "azurerm_public_ip" "WordPressIP" {
   name                = "${var.wp}IP"
   location            = "${var.loc}"
@@ -81,13 +75,22 @@ resource "azurerm_network_interface" "WordPressNic" {
   }
 }
 
+# Storage Account
+resource "azurerm_storage_account" "WPVMstorageaccount" {
+    name                = "WordPressVMTerraformScript"
+    resource_group_name = "${var.rg}"
+    location            = "eastus"
+    account_replication_type = "LRS"
+    account_tier = "Standard"
+}
+
 # VM
 resource "azurerm_virtual_machine" "WordPressVM" {
   name                  = "${var.wp}VM"
   location              = "${var.loc}"
   resource_group_name   = "${var.rg}"
   network_interface_ids = ["${azurerm_network_interface.WordPressNic.id}"]
-  vm_size               = "Standard_B1ls"
+  vm_size               = "Standard_DS1_v2"
 
   delete_data_disks_on_termination = true
   delete_os_disk_on_termination    = true
@@ -111,6 +114,10 @@ resource "azurerm_virtual_machine" "WordPressVM" {
     admin_username = "ScriptUser"
     admin_password = "Password1234!"
   }
+  
+  boot_diagnostics {
+    enable = "true"
+    storage_uri = "$azure_storage_account.WPVMstorageaccount.primary_blob_endpoint}"
 
   os_profile_linux_config {
     disable_password_authentication = false
