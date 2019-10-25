@@ -118,6 +118,7 @@ resource "azurerm_virtual_machine" "WordPressVM" {
   boot_diagnostics {
     enable = "true"
     storage_uri = "${azure_storage_account.WPVMstorageaccount.primary_blob_endpoint}"
+    }
 
   os_profile_linux_config {
     disable_password_authentication = false
