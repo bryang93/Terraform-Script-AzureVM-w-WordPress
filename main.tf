@@ -76,7 +76,7 @@ resource "azurerm_network_interface" "WordPressNic" {
 }
 
 # Storage Account
-resource "azurerm_storage_account" "wpvmstorageaccount" {
+resource "azurerm_storage_account" "WPStorage" {
     name                = "wpvmstorageaccount"
     resource_group_name = "${var.rg}"
     location            = "eastus"
@@ -117,7 +117,7 @@ resource "azurerm_virtual_machine" "WordPressVM" {
   
   boot_diagnostics {
     enable = "true"
-    storage_uri = "${azure_storage_account.wpvmstorageaccount.primary_blob_endpoint}"
+    storage_uri = "${azure_storage_account.WPStorage.primary_blob_endpoint}"
     }
 
   os_profile_linux_config {
