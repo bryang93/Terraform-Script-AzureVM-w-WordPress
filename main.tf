@@ -75,15 +75,6 @@ resource "azurerm_network_interface" "WordPressNic" {
   }
 }
 
-# Storage Account
-resource "azurerm_storage_account" "WPStorage" {
-    name                = "wpvmstorageaccount"
-    resource_group_name = "${var.rg}"
-    location            = "eastus"
-    account_replication_type = "LRS"
-    account_tier = "Standard"
-}
-
 # VM
 resource "azurerm_virtual_machine" "WordPressVM" {
   name                  = "${var.wp}VM"
@@ -114,11 +105,6 @@ resource "azurerm_virtual_machine" "WordPressVM" {
     admin_username = "ScriptUser"
     admin_password = "Password1234!"
   }
-  
-  boot_diagnostics {
-    enable = "true"
-    storage_uri = "${azure_storage_account.WPStorage.primary_blob_endpoint}"
-    }
 
   os_profile_linux_config {
     disable_password_authentication = false
